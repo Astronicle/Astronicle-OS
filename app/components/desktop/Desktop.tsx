@@ -1,6 +1,6 @@
 'use client';
-import { useEffect, useState, useRef } from 'react';
-import { motion } from 'framer-motion';
+import { useEffect, useState, useRef, useCallback } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useWindowStore } from '@/store/windowStore';
 import { DesktopIcon } from './DesktopIcon';
 import { EasterEggOverlay, EasterEggData } from './EasterEggOverlay';
@@ -80,6 +80,141 @@ const SudoContent = () => {
     </div>
   );
 };
+
+// ── DVD Bouncer ──────────────────────────────────────────────────────────────
+
+const CARD_W = 300;
+const CARD_H = 100;
+const STEP = 5;        // px per teleport jump
+const TICK = 1000;        // ms between jumps
+const ICON_COL = 160;    // left margin to avoid icons
+
+const PALETTE = [
+  '#6366f1', '#8b5cf6', '#ec4899', '#f59e0b',
+  '#10b981', '#3b82f6', '#ef4444', '#06b6d4',
+];
+
+function DVDTeleporter() {
+  const [pos, setPos]     = useState<{ x: number; y: number } | null>(null);
+  const [color, setColor] = useState(PALETTE[0]);
+  const [key, setKey]     = useState(0);
+
+  // velocity stored in a ref so interval always sees latest
+  const vel = useRef({ dx: STEP, dy: STEP });
+
+  const tick = useCallback(() => {
+    const vw = window.innerWidth;
+    const vh = window.innerHeight - 48;
+
+    setPos(prev => {
+      let x = (prev?.x ?? ICON_COL + 40) + vel.current.dx;
+      let y = (prev?.y ?? 80)            + vel.current.dy;
+
+      let bounced = false;
+
+      if (x <= ICON_COL) {
+        x = ICON_COL;
+        vel.current.dx = Math.abs(vel.current.dx);
+        bounced = true;
+      } else if (x >= vw - CARD_W) {
+        x = vw - CARD_W;
+        vel.current.dx = -Math.abs(vel.current.dx);
+        bounced = true;
+      }
+
+      if (y <= 48) {
+        y = 48;
+        vel.current.dy = Math.abs(vel.current.dy);
+        bounced = true;
+      } else if (y >= vh - CARD_H) {
+        y = vh - CARD_H;
+        vel.current.dy = -Math.abs(vel.current.dy);
+        bounced = true;
+      }
+
+      if (bounced) {
+        setColor(PALETTE[Math.floor(Math.random() * PALETTE.length)]);
+        setKey(k => k + 1);
+      }
+
+      return { x, y };
+    });
+  }, []);
+
+  useEffect(() => {
+    // Start after a short delay
+    const init = setTimeout(() => {
+      setPos({ x: ICON_COL + 40, y: 120 });
+      setKey(1);
+    }, 2500);
+    return () => clearTimeout(init);
+  }, []);
+
+  useEffect(() => {
+    if (!pos) return;
+    const id = setInterval(tick, TICK);
+    return () => clearInterval(id);
+  }, [pos, tick]);
+
+  if (!pos) return null;
+
+  return (
+    <AnimatePresence mode="wait">
+      <motion.div
+        key={key}
+        initial={{ opacity: 0, scale: 0.88 }}
+        animate={{ opacity: 1, scale: 1 }}
+        exit={{ opacity: 0, scale: 0.92 }}
+        transition={{ duration: 0.12 }}
+        style={{
+          position: 'absolute',
+          left: pos.x,
+          top: pos.y,
+          width: CARD_W,
+          pointerEvents: 'none',
+          zIndex: 5,
+        }}
+      >
+        <div style={{
+          borderRadius: 10,
+          border: `1px solid ${color}55`,
+          background: `rgba(0,0,0,0.72)`,
+          backdropFilter: 'blur(10px)',
+          padding: '10px 14px',
+          boxShadow: `0 0 18px ${color}44, inset 0 0 0 1px ${color}22`,
+          overflow: 'hidden',
+          position: 'relative',
+        }}>
+          <div style={{
+            position: 'absolute', inset: 0, pointerEvents: 'none',
+            backgroundImage: 'repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.08) 2px, rgba(0,0,0,0.08) 4px)',
+            borderRadius: 10,
+          }} />
+          <div style={{
+            position: 'absolute', top: 0, left: 0, right: 0, height: 2,
+            background: `linear-gradient(90deg, transparent, ${color}, transparent)`,
+            borderRadius: '10px 10px 0 0',
+          }} />
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 6 }}>
+            <span style={{ fontFamily: 'monospace', fontSize: 9, color: `${color}cc`, letterSpacing: '0.12em', textTransform: 'uppercase' }}>
+              SYS_INFO
+            </span>
+            <span style={{ fontFamily: 'monospace', fontSize: 9, color: 'rgba(255,255,255,0.25)' }}>
+              {new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' })}
+            </span>
+          </div>
+          <div style={{ fontFamily: 'monospace', fontSize: 11, color: 'rgba(255,255,255,0.85)', lineHeight: 1.65 }}>
+            <div><span style={{ color: `${color}bb` }}>user</span>  <span style={{ color: 'rgba(255,255,255,0.4)' }}>::</span> Abdul Rehman</div>
+            <div><span style={{ color: `${color}bb` }}>stack</span> <span style={{ color: 'rgba(255,255,255,0.4)' }}>::</span> java · typescript · aws</div>
+            <div><span style={{ color: `${color}bb` }}>mode</span>  <span style={{ color: 'rgba(255,255,255,0.4)' }}>::</span> <span style={{ color }}>● online</span></div>
+          </div>
+        </div>
+      </motion.div>
+    </AnimatePresence>
+  );
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
 
 export function Desktop() {
   const { settings } = useWindowStore();
@@ -175,6 +310,9 @@ export function Desktop() {
             </motion.div>
           ))}
         </div>
+
+        {/* DVD Teleporter */}
+        <DVDTeleporter />
 
         {/* Hint */}
         <motion.div
