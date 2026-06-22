@@ -28,7 +28,7 @@ export function Taskbar() {
     setClockClicks(n);
     if (n >= 10) {
       setClockClicks(0);
-      alert('🎉 Easter Egg found! You clicked the clock 10 times!\nTime is just a construct anyway... ⏰✨');
+      window.dispatchEvent(new CustomEvent('clockEasterEgg', { detail: 10 }));
     }
   };
 

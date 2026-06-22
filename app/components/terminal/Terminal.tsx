@@ -15,7 +15,7 @@ const SPLASH: Array<{ text: string; type: Line['type'] }> = [
   { text: ' / ___ \\ ___) || | |  _ <| |_| | |\\  || | |___| |___| |___', type: 'ascii' },
   { text: '/_/   \\_\\____/ |_| |_| \\_\\\\___/|_| \\_|___\\____|_____|_____|', type: 'ascii' },
   { text: '', type: 'output' },
-  { text: '  Portfolio OS v2.0.26  —  Abdul Rehman, Software Developer', type: 'title' },
+  { text: '  Astronicle OS v2.0.26  —  Abdul Rehman, Software Developer', type: 'title' },
   { text: '', type: 'output' },
   { text: '  ────────────────────────────────────────────────────────', type: 'dim' },
   { text: '', type: 'output' },
@@ -29,9 +29,9 @@ const PROMPT_LINE = '  [ y ] Terminal mode      [ n ] Close & use desktop';
 
 const COMMANDS: Record<string, () => string[]> = {
   help: () => [
-    '╔══════════════════════════════════════╗',
-    '║   Astronicle Portfolio OS — Help     ║',
-    '╚══════════════════════════════════════╝',
+    '╔════════════════════════════════════════════════════╗',
+    '║   Abdul Rehman Portfolio — Astronicle OS  Help     ║',
+    '╚════════════════════════════════════════════════════╝',
     '',
     '  about          → About me',
     '  projects       → List all projects',
@@ -146,7 +146,7 @@ const COMMANDS: Record<string, () => string[]> = {
     '  📧  astronicle78@gmail.com',
     '  🔵  linkedin.com/in/astronicle78',
     '  🐙  github.com/Astronicle',
-    '  🟠  leetcode.com/astronicle',
+    '  🟠  leetcode.com/Astronicle78',
     '  📞  +91 6388470933',
     '',
   ],
@@ -171,7 +171,7 @@ const COMMANDS: Record<string, () => string[]> = {
   },
 
   leetcode: () => {
-    if (typeof window !== 'undefined') window.open('https://leetcode.com/astronicle', '_blank');
+    if (typeof window !== 'undefined') window.open('https://leetcode.com/Astronicle78', '_blank');
     return ['Opening LeetCode... 🟠', ''];
   },
 
@@ -272,11 +272,10 @@ export function Terminal() {
     if (!t) { setLines(l => [...l, inLine, { type: 'output', content: '' }]); return; }
 
     if (t === 'sudo hire astronicle') {
+      window.dispatchEvent(new Event('sudoEasterEgg'));
       setLines(l => [...l, inLine,
-        { type: 'success', content: '🎉 EXCELLENT CHOICE!' },
-        { type: 'success', content: '   Contact: astronicle78@gmail.com' },
-        { type: 'success', content: '   LinkedIn: linkedin.com/in/astronicle78 🚀' },
-        { type: 'output',  content: '' },
+        { type: 'dim', content: '  launching...' },
+        { type: 'output', content: '' },
       ]); return;
     }
     if (t === 'history') {

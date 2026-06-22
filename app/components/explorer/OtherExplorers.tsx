@@ -162,7 +162,7 @@ export function ContactExplorer() {
     { icon: '📧', label: 'Email', value: 'astronicle78@gmail.com', url: 'mailto:astronicle78@gmail.com', color: '#ef4444' },
     { icon: '🔵', label: 'LinkedIn', value: 'linkedin.com/in/astronicle78', url: 'https://linkedin.com/in/astronicle78', color: '#0077b5' },
     { icon: '🐙', label: 'GitHub', value: 'github.com/Astronicle', url: 'https://github.com/Astronicle', color: '#a855f7' },
-    { icon: '🟠', label: 'LeetCode', value: 'leetcode.com/astronicle', url: 'https://leetcode.com/astronicle', color: '#ffa116' },
+    { icon: '🟠', label: 'LeetCode', value: 'leetcode.com/Astronicle78', url: 'https://leetcode.com/Astronicle78', color: '#ffa116' },
     { icon: '📞', label: 'Phone', value: '+91 6388470933', url: 'tel:+916388470933', color: '#10b981' },
   ];
 

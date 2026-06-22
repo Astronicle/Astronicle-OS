@@ -26,10 +26,10 @@ export function ShutdownScreen() {
           >
             <div style={{ fontSize: 64, marginBottom: 24 }}>🌌</div>
             <h1 style={{ color: '#fff', fontSize: 22, fontWeight: 700, margin: '0 0 8px' }}>
-              Thank you for visiting Astronicle&apos;s Portfolio
+              Thank you for visiting Abdul Rehman&apos;s Portfolio
             </h1>
             <p style={{ color: 'rgba(255,255,255,0.35)', fontSize: 13, margin: '0 0 32px' }}>
-              Portfolio OS — Powered by curiosity and caffeine ☕
+              Astronicle OS — Powered by curiosity and silly
             </p>
             <div style={{
               display: 'inline-flex', alignItems: 'center', gap: 8,

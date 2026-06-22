@@ -129,7 +129,7 @@ export function MobileLayout() {
             { icon: '📧', label: 'Email', value: 'astronicle78@gmail.com', url: 'mailto:astronicle78@gmail.com' },
             { icon: '🔵', label: 'LinkedIn', value: 'linkedin.com/in/astronicle78', url: 'https://linkedin.com/in/astronicle78' },
             { icon: '🐙', label: 'GitHub', value: 'github.com/Astronicle', url: 'https://github.com/Astronicle' },
-            { icon: '🟠', label: 'LeetCode', value: 'leetcode.com/astronicle', url: 'https://leetcode.com/astronicle' },
+            { icon: '🟠', label: 'LeetCode', value: 'leetcode.com/Astronicle78', url: 'https://leetcode.com/Astronicle78' },
           ].map(c => (
             <a key={c.label} href={c.url} target="_blank" rel="noopener noreferrer" style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '14px 16px', borderRadius: 12, background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.07)', textDecoration: 'none' }}>
               <span style={{ fontSize: 20 }}>{c.icon}</span>
